@@ -2,6 +2,8 @@
 
 namespace Sunhill\Dedup;
 
+use Illuminate\Support\Str;
+
 class File
 {
 
@@ -20,6 +22,41 @@ class File
     protected $state;
 
     protected $id = 0;
+    
+    protected $options = [];
+    
+    protected function getMethod(string $option, array $parameters)
+    {
+        if (!isset($this->options[$option])) {
+            throw new \Exception("Access of unknown option '$option'");
+        }
+        $result = $this->options[$option];
+        if (is_scalar($result)) {
+            return $result;
+        }
+        if (is_callable($result)) {
+            return $result($this,...$parameters);
+        }
+    }
+    
+    protected function setMethod(string $option, $value = true)
+    {
+        $this->options[$option] = $value;
+    }
+    
+    public function __call($method, $parameters)
+    {
+        if (Str::startsWith($method,'get_')) {
+            return $this->getMethod(substr($method,4),$parameters);
+        }
+        if (Str::startsWith($method,'set_')) {
+            if (empty($parameters)) {
+                return $this->setMethod(substr($method,4),true);                
+            }
+            return $this->setMethod(substr($method,4),$parameters[0]);            
+        }
+        throw new \Exception("Unknown method '$method'");
+    }
     
     public function readFile(string $path)
     {
