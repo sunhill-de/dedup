@@ -9,7 +9,7 @@ uses(TestCase::class);
 test('Filter match', function() 
 {
     $file = \Mockery::mock(File::class);
-    $file->shouldReceive('get_something')->once()->andReturn(true);
+    $file->shouldReceive('getCondition')->once()->with('something')->andReturn(true);
     
     $test = new Filter();
     $test->setConditions(['something'=>true]);
@@ -21,8 +21,8 @@ test('Filter match', function()
 test('Filter match many', function()
 {
     $file = \Mockery::mock(File::class);
-    $file->shouldReceive('get_something')->once()->andReturn(true);
-    $file->shouldReceive('get_somethingelse')->once()->andReturn('ABC');
+    $file->shouldReceive('getCondition')->once()->with('something')->andReturn(true);
+    $file->shouldReceive('getCondition')->once()->with('somethingelse')->andReturn('ABC');
     
     $test = new Filter();
     $test->setConditions(['something'=>true,'somethingelse'=>'ABC']);
@@ -34,7 +34,7 @@ test('Filter match many', function()
 test('Filter fails', function()
 {
     $file = \Mockery::mock(File::class);
-    $file->shouldReceive('get_something')->once()->andReturn(false);
+    $file->shouldReceive('getCondition')->once()->with('something')->andReturn(false);
     
     $test = new Filter();
     $test->setConditions(['something'=>true]);
@@ -46,8 +46,8 @@ test('Filter fails', function()
 test('Filter fails many', function()
 {
     $file = \Mockery::mock(File::class);
-    $file->shouldReceive('get_something')->once()->andReturn(true);
-    $file->shouldReceive('get_somethingelse')->once()->andReturn('ABC');
+    $file->shouldReceive('getCondition')->once()->with('something')->andReturn(true);
+    $file->shouldReceive('getCondition')->once()->with('somethingelse')->andReturn('ABC');
     
     $test = new Filter();
     $test->setConditions(['something'=>true,'somethingelse'=>'DEF']);

@@ -27,7 +27,7 @@ class Filter
         return $this;
     }
     
-    public function setTarget($target)
+    public function setTarget(Filterable $target)
     {
         $this->target = $target;
         return $this;
@@ -37,7 +37,7 @@ class Filter
     {
         foreach ($this->conditions as $key => $value) {
             $method = 'get_'.$key;
-            $current = $this->target->$method();
+            $current = $this->target->getCondition($key);
             if ($current !== $value) {
                 return false;
             }
