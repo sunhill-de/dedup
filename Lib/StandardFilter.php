@@ -60,7 +60,7 @@ trait StandardFilter
      * @param string $name
      * @param unknown $value
      */
-    public function setCondition(string $name, $value)
+    public function setCondition(string $name, $value = true)
     {
         $this->options[$name] = $value;        
     }
