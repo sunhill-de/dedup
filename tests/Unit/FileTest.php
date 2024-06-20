@@ -49,27 +49,27 @@ test('File mime subgroup works', function($file, $expect)
     ['application-testfile/A.qqq','plain']
 ]);
 
-test('set_something() and get_something() works with scalar', function()
+test('setCondition() and getCondition() works with scalar', function()
 {
     $test = new File();
-    $test->set_something(5);
-    expect($test->get_something())->toBe(5);
+    $test->setCondition('something',5);
+    expect($test->getCondition('something'))->toBe(5);
 });
 
-test('set_something() and get_something() works with default', function()
+test('setCondition() and getCondition() works with default', function()
 {
     $test = new File();
-    $test->set_something();
-    expect($test->get_something())->toBe(true);    
+    $test->setCondition('something');
+    expect($test->getCondition('something'))->toBe(true);    
 });
 
 test('set_something() and get_something() works with callback', function()
 {
     $test = new File();
-    $test->set_something(function($file) 
+    $test->setCondition('something',function($file) 
     {
         return 5;
     });
-    expect($test->get_something())->toBe(5);    
+    expect($test->getCondition('something'))->toBe(5);    
 });
 
