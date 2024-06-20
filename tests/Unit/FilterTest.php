@@ -56,3 +56,9 @@ test('Filter fails many', function()
     expect($test->matches())->toBe(false);
 });
 
+test('static access works', function()
+{
+   $test = new Filter();
+   expect($test->getGroup())->toBe('');
+   expect($test->getPriority())->toBe(50);
+});

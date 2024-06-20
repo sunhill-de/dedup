@@ -9,6 +9,31 @@ class Filter
     
     protected $target;
     
+    static protected $group = '';
+    
+    static protected $priority = 50;
+    
+    /**
+     * Returns the group of this filter. The FilterManager uses this group to apply
+     * only filters that are provided for the given item
+     * 
+     * @return string
+     */
+    public function getGroup(): string
+    {
+        return static::$group;
+    }
+    
+    /**
+     * The filtes of one group are sorted by priority by the filter manager
+     * 
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return static::$priority;    
+    }
+    
     /**
      * Sets the needed conditions for this filter
      * 
