@@ -1,6 +1,6 @@
 <?php
 
-namespace Sunhill\Dedup;
+namespace Sunhill\Dedup\Filter;
 
 /**
  * A standard implementation for filterable items
@@ -8,7 +8,7 @@ namespace Sunhill\Dedup;
  * @author Klaus Dimde
  *
  */
-trait StandardFilter
+class FilterContainer
 {
 
     protected $options = [];
