@@ -33,13 +33,23 @@ class FileTable
     {
         $long_hash = $file->longHash();
         $query = DB::table('hashtable')->where('long_hash', $long_hash)->first();
-        return $query;
+        return !empty($query);
+    }
+    
+    public function getFileWithHash(string $hash): string
+    {
+        $query = DB::table('hashtable')->where('long_hash', $hash)->first();
+        return $query->file_path;
     }
     
     public function hasFile(File $file): bool
     {
-        if ($query = $this->hasShortHash($file)) {
+        $query = $this->hasShortHash($file);
+        
+        if (!$query->isEmpty()) {
             $this->checkForRecalc($query);
+        } else {
+            return false;
         }
         return $this->hasLongHash($file);
     }

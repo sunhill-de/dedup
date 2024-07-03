@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('hashtable', function (Blueprint $table) {
             $table->id();
-            $table->string('long_hash',40)->unique();
+            $table->string('long_hash',40)->nullable()->index();
             $table->string('short_hash',40);
-            $table->integer('size');
+            $table->integer('size')->nullable();
             $table->string('file_path');
             $table->timestamps();
         });
