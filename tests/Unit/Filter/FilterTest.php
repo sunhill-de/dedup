@@ -10,6 +10,7 @@ uses(TestCase::class);
 test('Filter match', function() 
 {
     $container = \Mockery::mock(FilterContainer::class);
+    $container->shouldReceive('hasCondition')->once()->with('something')->andReturn(true);
     $container->shouldReceive('getCondition')->once()->with('something')->andReturn(true);
     
     $test = new Filter();
@@ -17,12 +18,14 @@ test('Filter match', function()
     $test::clearConditions();
     $test::addCondition('something', true);
     
-    expect($test->matches())->toBe(true);
+    expect($test->matches($container))->toBe(true);
 });
 
 test('Filter match many', function()
 {
     $container = \Mockery::mock(FilterContainer::class);
+    $container->shouldReceive('hasCondition')->once()->with('something')->andReturn(true);
+    $container->shouldReceive('hasCondition')->once()->with('somethingelse')->andReturn(true);
     $container->shouldReceive('getCondition')->once()->with('something')->andReturn(true);
     $container->shouldReceive('getCondition')->once()->with('somethingelse')->andReturn('ABC');
     
@@ -39,6 +42,7 @@ test('Filter fails', function()
 {
     $container = \Mockery::mock(FilterContainer::class);
     $container->shouldReceive('getCondition')->once()->with('something')->andReturn(false);
+    $container->shouldReceive('hasCondition')->once()->with('something')->andReturn(true);
     
     $test = new Filter();
     $test->setContainer($container);
@@ -52,7 +56,9 @@ test('Filter match alternative (match all)', function()
 {
     $container = \Mockery::mock(FilterContainer::class);
     $container->shouldReceive('getCondition')->once()->with('something')->andReturn(true);
+    $container->shouldReceive('hasCondition')->once()->with('something')->andReturn(true);
     $container->shouldReceive('getCondition')->never()->with('somethingelse')->andReturn('ABC');
+    $container->shouldReceive('hasCondition')->never()->with('somethingelse')->andReturn(true);
     
     $test = new Filter();
     $test->setContainer($container);
@@ -66,7 +72,9 @@ test('Filter match alternative (match first)', function()
 {
     $container = \Mockery::mock(FilterContainer::class);
     $container->shouldReceive('getCondition')->once()->with('something')->andReturn(true);
+    $container->shouldReceive('hasCondition')->once()->with('something')->andReturn(true);
     $container->shouldReceive('getCondition')->never()->with('somethingelse')->andReturn('DEF');
+    $container->shouldReceive('hasCondition')->never()->with('somethingelse')->andReturn(true);
     
     $test = new Filter();
     $test->setContainer($container);
@@ -80,7 +88,9 @@ test('Filter match alternative (match last)', function()
 {
     $container = \Mockery::mock(FilterContainer::class);
     $container->shouldReceive('getCondition')->once()->with('something')->andReturn(false);
+    $container->shouldReceive('hasCondition')->once()->with('something')->andReturn(true);
     $container->shouldReceive('getCondition')->once()->with('somethingelse')->andReturn('ABC');
+    $container->shouldReceive('hasCondition')->once()->with('somethingelse')->andReturn(true);
     
     $test = new Filter();
     $test->setContainer($container);
@@ -94,7 +104,9 @@ test('Filter match alternative (match none)', function()
 {
     $container = \Mockery::mock(FilterContainer::class);
     $container->shouldReceive('getCondition')->once()->with('something')->andReturn(false);
+    $container->shouldReceive('hasCondition')->once()->with('something')->andReturn(true);
     $container->shouldReceive('getCondition')->once()->with('somethingelse')->andReturn('DEF');
+    $container->shouldReceive('hasCondition')->once()->with('somethingelse')->andReturn(true);
     
     $test = new Filter();
     $test->setContainer($container);
@@ -109,7 +121,9 @@ test('Filter fails many', function()
 {
     $container = \Mockery::mock(FilterContainer::class);
     $container->shouldReceive('getCondition')->once()->with('something')->andReturn(true);
+    $container->shouldReceive('hasCondition')->once()->with('something')->andReturn(true);
     $container->shouldReceive('getCondition')->once()->with('somethingelse')->andReturn('DEF');
+    $container->shouldReceive('hasCondition')->once()->with('somethingelse')->andReturn(true);
     
     $test = new Filter();
     $test->setContainer($container);
