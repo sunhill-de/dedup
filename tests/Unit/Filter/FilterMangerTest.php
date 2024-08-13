@@ -62,10 +62,16 @@ test('execute filter list with sufficient', function()
 
     $filter1 = \Mockery::mock(Filter::class);
     $filter1->shouldReceive('execute')->once()->andReturn('CONTINUE');
+    $filter1->shouldReceive('matches')->once()->andReturn(true);
+    $filter1->shouldReceive('setContainer');
     $filter2 = \Mockery::mock(Filter::class);
     $filter2->shouldReceive('execute')->once()->andReturn('SUFFICIENT');
+    $filter2->shouldReceive('setContainer');
+    $filter2->shouldReceive('matches')->once()->andReturn(true);
     $filter3 = \Mockery::mock(Filter::class);
     $filter3->shouldReceive('execute')->once()->andReturn('CONTINUE');
+    $filter3->shouldReceive('setContainer');
+    $filter3->shouldReceive('matches')->once()->andReturn(true);
     
     $list = [$filter1,$filter2,$filter3];
     $container = \Mockery::mock(FilterContainer::class);
@@ -79,10 +85,16 @@ test('execute filter list without sufficient', function()
 
     $filter1 = \Mockery::mock(Filter::class);
     $filter1->shouldReceive('execute')->once()->andReturn('CONTINUE');
+    $filter1->shouldReceive('matches')->once()->andReturn(true);
+    $filter1->shouldReceive('setContainer');
     $filter2 = \Mockery::mock(Filter::class);
     $filter2->shouldReceive('execute')->once()->andReturn('CONTINUE');
+    $filter2->shouldReceive('matches')->once()->andReturn(true);
+    $filter2->shouldReceive('setContainer');
     $filter3 = \Mockery::mock(Filter::class);
     $filter3->shouldReceive('execute')->once()->andReturn('CONTINUE');
+    $filter3->shouldReceive('matches')->once()->andReturn(true);
+    $filter3->shouldReceive('setContainer');
     
     $list = [$filter1,$filter2,$filter3];
     $container = \Mockery::mock(FilterContainer::class);
@@ -96,10 +108,15 @@ test('execute filter list with stop and sufficient', function()
     
     $filter1 = \Mockery::mock(Filter::class);
     $filter1->shouldReceive('execute')->once()->andReturn('SUFFICIENT');
+    $filter1->shouldReceive('matches')->once()->andReturn(true);
+    $filter1->shouldReceive('setContainer');
     $filter2 = \Mockery::mock(Filter::class);
     $filter2->shouldReceive('execute')->once()->andReturn('STOP');
+    $filter2->shouldReceive('matches')->once()->andReturn(true);
+    $filter2->shouldReceive('setContainer');
     $filter3 = \Mockery::mock(Filter::class);
     $filter3->shouldReceive('execute')->never();
+    $filter3->shouldReceive('matches')->never();
     
     $list = [$filter1,$filter2,$filter3];
     $container = \Mockery::mock(FilterContainer::class);
@@ -113,10 +130,15 @@ test('execute filter list with stop and without sufficient', function()
     
     $filter1 = \Mockery::mock(Filter::class);
     $filter1->shouldReceive('execute')->once()->andReturn('CONTINUE');
+    $filter1->shouldReceive('matches')->once()->andReturn(true);
+    $filter1->shouldReceive('setContainer');
     $filter2 = \Mockery::mock(Filter::class);
     $filter2->shouldReceive('execute')->once()->andReturn('STOP');
+    $filter2->shouldReceive('matches')->once()->andReturn(true);
+    $filter2->shouldReceive('setContainer');
     $filter3 = \Mockery::mock(Filter::class);
     $filter3->shouldReceive('execute')->never();
+    $filter3->shouldReceive('matches')->never();
     
     $list = [$filter1,$filter2,$filter3];
     $container = \Mockery::mock(FilterContainer::class);
@@ -131,10 +153,15 @@ test('execute filter list with failure', function()
     
     $filter1 = \Mockery::mock(Filter::class);
     $filter1->shouldReceive('execute')->once()->andReturn('CONTINUE');
+    $filter1->shouldReceive('matches')->once()->andReturn(true);
+    $filter1->shouldReceive('setContainer');
     $filter2 = \Mockery::mock(Filter::class);
     $filter2->shouldReceive('execute')->once()->andReturn('FAILURE');
+    $filter2->shouldReceive('matches')->once()->andReturn(true);
+    $filter2->shouldReceive('setContainer');
     $filter3 = \Mockery::mock(Filter::class);
     $filter3->shouldReceive('execute')->never();
+    $filter3->shouldReceive('matches')->never();
     
     $list = [$filter1,$filter2,$filter3];
     $container = \Mockery::mock(FilterContainer::class);
