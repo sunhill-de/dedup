@@ -4,12 +4,12 @@ namespace Sunhill\Dedup\Filter;
 
 class Filter
 {
+
+    protected static $group = '';
     
-    static protected $group = '';
+    protected static $priority = 50;
     
-    static protected $priority = 50;
-    
-    static protected $conditions;
+    protected static $conditions = [];
     
     protected $container;
     
@@ -48,9 +48,7 @@ class Filter
      */
     protected static function checkConditions()
     {
-        if (empty(static::$conditions)) {
-            static::initializeConditions();
-        }
+         static::initializeConditions();
     }
 
     public static function clearConditions()
@@ -119,7 +117,7 @@ class Filter
     
     public function matches(?FilterContainer $container = null): bool
     {
-        if ($container) {
+        if (!$container) {
             $this->setContainer($container);
         }
         foreach (static::getConditions() as $key => $value) {
@@ -127,7 +125,7 @@ class Filter
                 if (!$this->solveArray($value)) {
                     return false;
                 }
-            } else if ($this->container->getCondition($key) !== $value) {
+            } else if (!$this->container->hasCondition($key) || ($this->container->getCondition($key) !== $value)) {
                 return false;
             }
         }

@@ -23,6 +23,14 @@ class FilterManager
     
     protected $filters = [];
     
+    /**
+     * Clears the filters
+     */
+    public function clearFilters()
+    {
+        $this->filters = [];    
+    }
+    
     public function addFilters($filters)
     {
         if (is_array($filters)) {
@@ -44,8 +52,9 @@ class FilterManager
     protected function getGroupedFilters(string $group): array
     {
         return array_filter($this->filters, function($item) use ($group)
-        {
-           return $item->getGroup() == $group; 
+        {          
+            $det_group = $item->getGroup();           
+            return $item->getGroup() == $group; 
         });
     }
     
@@ -72,6 +81,10 @@ class FilterManager
     {
         $result = 'INSUFFICIENT';
         foreach ($filters as $filter) {
+            $filter->setContainer($container);
+            if (!$filter->matches($container)) {
+                continue;
+            }
             switch ($filterresult = $filter->execute($container)) {
                 case 'STOP':
                     return $result;
@@ -80,6 +93,8 @@ class FilterManager
                 case 'SUFFICIENT':
                     $result = 'SUCCESS';
                     break;
+                case 'SUFFICIENTSTOP':
+                    return 'SUCCESS';
                 case 'CONTINUE':
                     break;
                 default:
