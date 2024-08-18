@@ -14,25 +14,25 @@ test('Find entry with success (combined mime)', function()
 {
    $this->seed(MimesTableSeeder::class);
    
-   $mime = Mime::searchValues('Audio/Mpeg');
+   $mime = Mime::searchValues('audio/mpeg');
    
-   expect($mime->main)->toBe('Audio');
+   expect($mime)->toBe(1);
 });
 
 test('Find entry with success (single mime)', function()
 {
     $this->seed(MimesTableSeeder::class);
     
-    $mime = Mime::searchValues('Audio','Mpeg');
+    $mime = Mime::searchValues('audio','mpeg');
     
-    expect($mime->main)->toBe('Audio');
+    expect($mime)->toBe(1);
 });
 
 test('Find entry with failure', function()
 {
     $this->seed(MimesTableSeeder::class);
     
-    $mime = Mime::searchValues('Image/Jpeg');
+    $mime = Mime::searchValues('image/jpeg');
     
     expect($mime)->toBe(null);
 });
@@ -42,11 +42,24 @@ test('Add entry', function()
     $this->seed(MimesTableSeeder::class);
     
     $mime = new Mime();
-    $mime->main = 'Image';
-    $mime->sub = 'Jpeg';
+    $mime->main = 'image';
+    $mime->sub = 'jpeg';
     
     $mime->commit();
     
-    $this->assertDatabaseHas('mimes',['main'=>'Image','sub'=>'Jpeg']);
+    $this->assertDatabaseHas('mimes',['main'=>'image','sub'=>'jpeg']);
+    expect($mime->getID() > 0)->toBe(true);
+});
+
+test('Load entry', function() 
+{
+    $this->seed(MimesTableSeeder::class);
+    
+    $mime = new Mime();
+    $mime->load(1);
+    
+    expect($mime->main)->toBe('audio');
+    expect($mime->sub)->toBe('mpeg');
+    
 });
 
