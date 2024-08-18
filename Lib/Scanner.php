@@ -3,6 +3,8 @@
 namespace Sunhill\Dedup;
 
 use Illuminate\Support\Str;
+use Sunhill\Dedup\Filter\FilterContainer;
+use Sunhill\Dedup\Facades\Filters;
 
 class Scanner 
 {
@@ -214,9 +216,6 @@ class Scanner
                 break;
             case 'report':
                 break;
-            case 'ignore':
-                $this->message("Ignoring: ".$file->getPath());
-                break;
         }
     }
     
@@ -227,20 +226,33 @@ class Scanner
                 break;
             case 'move':
                 break;
-            case 'ignore':
-                break;
         }
     }
     
     protected function handleFile(string $file)
     {
+        $container = new FilterContainer();
+        $container->setCondition('directory', $this->directory);
+        $container->setCondition('recursive', $this->recursive);
+        $container->setCondition('handle_known_file', $this->known_file_action);
+        $container->setCondition('known_file_destination', $this->known_file_destination);
+        $container->setCondition('handle_new_file', $this->new_file_action);
+        $container->setCondition('new_file_destination', $this->new_file_destination);
+        $container->setCondition('dry_run', $this->dry_run);
+        $container->setCondition('no_cache', $this->cache);
+        
          $file = new File($file);
          $file_table = new FileTable();
          if ($file_table->hasFile($file)) {
-             $this->handleKnownFile($file);
+             $container->setCondition('is_known_file', true);
+             $container->setCondition('is_new_file', false);
          } else {
-             $this->handleNewFile($file);
+             $container->setCondition('is_known_file', false);
+             $container->setCondition('is_new_file', true);
          }
+         $container->setCondition('file', $file);
+         $container->setCondition('file_table', $file_table);
+         Filters::execute('Files', $container);
     }
     
     protected function removeEmptyDir(string $dir)
