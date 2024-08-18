@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('main',40);
             $table->string('sub',40);
-            $table->timestamps();
         });
     }
 
