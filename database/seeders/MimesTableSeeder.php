@@ -14,8 +14,8 @@ class MimesTableSeeder extends Seeder
     public function run(): void
     {
         DB::table('mimes')->insert([
-            ['id'=>1,'main'=>'Audio','sub'=>'Mpeg'],  
-            ['id'=>2,'main'=>'Application','sub'=>'Test'],
+            ['id'=>1,'main'=>'audio','sub'=>'mpeg'],  
+            ['id'=>2,'main'=>'text','sub'=>'plain'],
         ]);
     }
 }
