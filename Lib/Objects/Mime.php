@@ -33,6 +33,17 @@ class Mime extends DedupObject
         } else {
             $main = $main_or_mime;
         }
-        return DB::table('mimes')->where(['main'=>$main,'sub'=>$sub])->first();        
+        $result = DB::table('mimes')->where(['main'=>$main,'sub'=>$sub])->first();
+        if ($result) {
+            return $result->id;
+        } else {
+            return null;
+        }
     }
+
+    protected function getTableName()#
+    {
+        return 'mimes';
+    }
+    
 }
