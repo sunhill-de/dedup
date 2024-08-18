@@ -40,7 +40,6 @@ class Filter
      */
     protected static function initializeConditions()
     {
-        static::$conditions = [];    
     }
     
     /**
@@ -48,11 +47,12 @@ class Filter
      */
     protected static function checkConditions()
     {
-         static::initializeConditions();
+        static::initializeConditions();
     }
 
     public static function clearConditions()
     {
+        static::$conditions = [];
         static::initializeConditions();    
     }
     
@@ -64,13 +64,11 @@ class Filter
      */
     public static function addCondition(string $name, $condition)
     {
-        static::checkConditions();
         static::$conditions[$name] = $condition;
     }
     
     public static function addAlternativeCondition(array $condition)
     {
-        static::checkConditions();
         static::$conditions[time()] = $condition;
     }
     
@@ -108,7 +106,7 @@ class Filter
     protected function solveArray(array $array): bool
     {
         foreach ($array as $key => $value) {
-            if ($this->container->getCondition($key) == $value) {
+            if ($this->container->hasCondition($key) && ($this->container->getCondition($key) == $value)) {
                 return true;
             }
         }
@@ -117,7 +115,7 @@ class Filter
     
     public function matches(?FilterContainer $container = null): bool
     {
-        if (!$container) {
+        if ($container) {
             $this->setContainer($container);
         }
         foreach (static::getConditions() as $key => $value) {
