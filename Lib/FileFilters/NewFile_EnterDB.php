@@ -2,17 +2,15 @@
 
 namespace Sunhill\Dedup\FileFilters;
 
-use Sunhill\Dedup\Filter\Filter;
-
-class NewFile_Ignore extends FileFilter
+class NewFile_EnterDB extends FileFilter
 {
     
-    static protected $priority = 10;
+    static protected $priority = 5;
     
     protected static function initializeConditions()
     {
         static::$conditions = [
-            'handle_new_file'=>'ignore',
+            'cache'=>true,
             'is_known_file'=>false,
             'is_new_file'=>true,
         ];
@@ -20,8 +18,8 @@ class NewFile_Ignore extends FileFilter
     
     public function execute(): string
     {
-        $this->container->setCondition('message', 'Ignoring new file');
-        return 'SUFFICIENTSTOP';
+        $this->message('Add new file to database cache');
+        return 'CONTINUE';
     }
     
 }

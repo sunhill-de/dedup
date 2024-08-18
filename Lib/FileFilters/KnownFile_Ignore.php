@@ -4,7 +4,7 @@ namespace Sunhill\Dedup\FileFilters;
 
 use Sunhill\Dedup\Filter\Filter;
 
-class NewFile_Ignore extends FileFilter
+class KnownFile_Ignore extends FileFilter
 {
     
     static protected $priority = 10;
@@ -12,15 +12,15 @@ class NewFile_Ignore extends FileFilter
     protected static function initializeConditions()
     {
         static::$conditions = [
-            'handle_new_file'=>'ignore',
-            'is_known_file'=>false,
-            'is_new_file'=>true,
+            'handle_known_file'=>'ignore',
+            'is_known_file'=>true,
+            'is_new_file'=>false,
         ];
     }
     
     public function execute(): string
     {
-        $this->container->setCondition('message', 'Ignoring new file');
+        $this->container->setCondition('message', 'Ignoring already known file');
         return 'SUFFICIENTSTOP';
     }
     
